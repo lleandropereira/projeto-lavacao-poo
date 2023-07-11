@@ -1,0 +1,137 @@
+CREATE DATABASE IF NOT EXISTS db_lavacao;
+USE db_lavacao;
+
+CREATE TABLE IF NOT EXISTS marca(
+   id int NOT NULL auto_increment,
+   nome  varchar(50) NOT NULL,
+   CONSTRAINT pk_marca
+      PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS cor(
+	id int NOT NULL auto_increment,
+    nome varchar(50) NOT NULL,
+    CONSTRAINT pk_cor
+		PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS modelo(
+   id int NOT NULL auto_increment,
+   descricao varchar(200),
+   categoria ENUM('PEQUENO', 'MEDIO', 'GRANDE', 'MOTO', 'PADRAO') NOT NULL DEFAULT 'PADRAO',
+   id_marca int NOT NULL,
+   CONSTRAINT pk_modelo
+      PRIMARY KEY(id),
+   CONSTRAINT fk_modelo_marca
+      FOREIGN KEY(id_marca)
+      REFERENCES marca(id)
+);
+
+CREATE TABLE IF NOT EXISTS motor(
+	id_modelo int NOT NULL REFERENCES modelo(id),
+    potencia int NOT NULL DEFAULT 0,
+	situacao ENUM('GASOLINA', 'ETANOL', 'FLEX', 'DIESEL', 'GNV', 'OUTRO') NOT NULL DEFAULT 'OUTRO',
+    CONSTRAINT pk_motor PRIMARY KEY (id_modelo),
+    CONSTRAINT fk_motor_modelo FOREIGN KEY (id_modelo) REFERENCES modelo(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS cliente(
+	id int NOT NULL auto_increment,
+    nome varchar(500) NOT NULL,
+    celular varchar(20),
+    email varchar(100),
+    data_cadastro date,
+    CONSTRAINT pk_cliente PRIMARY KEY(id)
+);
+
+CREATE TABLE IF NOT EXISTS pontuacao(
+	quantidade int,
+    id_cliente int NOT NULL REFERENCES cliente(id),
+	CONSTRAINT pk_pontuacao
+		PRIMARY KEY (id_cliente),
+	CONSTRAINT fk_pontuacao_cliente FOREIGN KEY (id_cliente)
+		REFERENCES cliente(id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS pessoa_fisica(
+	id_cliente int NOT NULL REFERENCES cliente(id),
+    cpf varchar(14),
+    data_nascimento date,
+    CONSTRAINT pk_pessoa_fisica PRIMARY KEY (id_cliente),
+    CONSTRAINT fk_pessoa_fisica_cliente FOREIGN KEY (id_cliente) REFERENCES cliente(id)
+				ON DELETE CASCADE
+		ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS pessoa_juridica(
+	id_cliente int NOT NULL REFERENCES cliente(id),
+    cnpj varchar(20) NOT NULL,
+    inscricao_estadual varchar(20) NOT NULL,
+    CONSTRAINT pk_pessoa_juridica PRIMARY KEY (id_cliente),
+    CONSTRAINT fk_pessoa_juridica_cliente FOREIGN KEY (id_cliente) REFERENCES cliente(id)
+				ON DELETE CASCADE
+		ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS veiculo(
+	id int NOT NULL auto_increment,
+    placa varchar(7),
+    observacao varchar(200),
+    id_cor int NOT NULL,
+    id_modelo int NOT NULL,
+    id_cliente int NOT NULL,
+    CONSTRAINT pk_veiculo
+		PRIMARY KEY(id),
+	CONSTRAINT fk_veiculo_cor
+		FOREIGN KEY (id_cor) 
+        REFERENCES cor(id),
+	CONSTRAINT fk_veiculo_modelo
+		FOREIGN KEY (id_modelo) 
+        REFERENCES modelo(id),
+	CONSTRAINT fk_veiculo_cliente
+		FOREIGN KEY (id_cliente)
+        REFERENCES cliente(id)
+);
+
+CREATE TABLE servico(
+	id int NOT NULL auto_increment,
+	descricao varchar(200) NOT NULL,
+    valor double NOT NULL,
+    ponto int NOT NULL,
+    categoria ENUM('PEQUENO', 'MEDIO', 'GRANDE', 'MOTO', 'PADRAO') NOT NULL DEFAULT 'PADRAO',
+    CONSTRAINT pk_servico
+		PRIMARY KEY(id)
+);
+
+CREATE TABLE ordem_servico(
+	-- id int NOT NULL auto_increment,
+    numero int NOT NULL auto_increment,
+    total double NOT NULL,
+    agenda date,
+    desconto double,
+    status_os ENUM('ABERTA', 'FECHADA', 'CANCELADA') NOT NULL DEFAULT 'ABERTA',
+    id_veiculo int NOT NULL,
+    CONSTRAINT pk_ordem_servico
+		PRIMARY KEY(numero),
+	CONSTRAINT fk_ordem_servico_veiculo
+		FOREIGN KEY(id_veiculo)
+        REFERENCES veiculo(id)
+);
+
+CREATE TABLE item_os(
+	id int NOT NULL auto_increment,
+	valor_servico double NOT NULL,
+    observacao varchar(200) NOT NULL,
+    id_servico int NOT NULL,
+    id_ordem_servico int NOT NULL,
+    CONSTRAINT pk_item_os
+		PRIMARY KEY(id),
+	CONSTRAINT fk_item_os_servico
+		FOREIGN KEY(id_servico)
+        REFERENCES servico(id),
+	CONSTRAINT fk_item_os_ordem_servico
+		FOREIGN KEY(id_ordem_servico)
+        REFERENCES ordem_servico(numero)
+        ON DELETE CASCADE
+);

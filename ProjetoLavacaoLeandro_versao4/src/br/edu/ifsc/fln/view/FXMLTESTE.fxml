@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane id="AnchorPane" prefHeight="482.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.controller.FXMLAnchorPaneProcessoOrdensDeServicoDialogController">
+   <children>
+      <GridPane layoutX="19.0" layoutY="20.0" prefHeight="410.0" prefWidth="537.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.0" minWidth="10.0" prefWidth="88.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="410.0" minWidth="10.0" prefWidth="245.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="410.0" minWidth="10.0" prefWidth="207.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="38.0" minHeight="0.0" prefHeight="28.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="86.0" minHeight="10.0" prefHeight="24.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="109.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="125.0" minHeight="10.0" prefHeight="123.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Veículo (Placa):" GridPane.halignment="RIGHT">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Data:" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Serviço:" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Items:" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Valor:" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
+            </Label>
+            <ComboBox fx:id="comboBoxVeiculos" maxWidth="-Infinity" prefHeight="25.0" prefWidth="342.0" promptText="Selecione o veículo..." GridPane.columnIndex="1" GridPane.columnSpan="2">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></ComboBox>
+            <DatePicker fx:id="datePickerData" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="355.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+            <TableView fx:id="tableViewItensDeVenda" onMouseClicked="#handleTableViewMouseClicked" prefHeight="200.0" prefWidth="367.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6">
+              <columns>
+                <TableColumn fx:id="tableColumnServico" prefWidth="120.0" text="Serviço" />
+                <TableColumn fx:id="tableColumnValor" prefWidth="109.0" text="Valor" />
+                  <TableColumn fx:id="tableColumnObservacoes" prefWidth="141.0" text="Observações" />
+              </columns>
+               <contextMenu>
+                  <ContextMenu fx:id="contextMenuTableView">
+                    <items>
+                      <MenuItem fx:id="contextMenuItemAtualizarObs" mnemonicParsing="false" onAction="#handleContextMenuItemAtualizarObs" text="Atualizar observações" />
+                        <MenuItem fx:id="contextMenuItemRemoverItem" mnemonicParsing="false" onAction="#handleContextMenuItemRemoverItem" text="Remover item" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
+            </TableView>
+            <TextField fx:id="textFieldValor" alignment="CENTER_RIGHT" editable="false" promptText="Total" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="8" />
+            <HBox prefHeight="41.0" prefWidth="311.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
+               <children>
+                  <ComboBox fx:id="comboBoxServico" disable="true" prefHeight="25.0" prefWidth="222.0" promptText="Selecione o veículo primeiro..." />
+                  <TextField fx:id="textFieldValorServico" disable="true" prefHeight="25.0" prefWidth="79.0" promptText="Valor..." />
+                  <TextField fx:id="textFieldObservacoesServico" disable="true" prefHeight="25.0" prefWidth="112.0" promptText="Observações ..." />
+                  <Button fx:id="buttonAdicionar" disable="true" mnemonicParsing="false" onAction="#handleButtonAdicionar" prefHeight="25.0" prefWidth="112.0" text="Adicionar" />
+               </children>
+            </HBox>
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="82.0" text="Desconto (%):" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
+            </Label>
+            <TextField fx:id="textFieldDesconto" alignment="CENTER_RIGHT" promptText="0,0" text="0,0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="82.0" text="Status:" GridPane.halignment="RIGHT" GridPane.rowIndex="9">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
+            </Label>
+            <ChoiceBox fx:id="choiceBoxStatus" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="340.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="9" />
+            <Label text="Cliente:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Modelo:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label prefHeight="17.0" prefWidth="40.0" text="Marca:" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="9.0" right="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Categoria:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin>
+            </Label>
+            <TextField fx:id="textFieldCliente" disable="true" editable="false" prefHeight="25.0" prefWidth="223.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+            <TextField fx:id="textFieldModelo" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="textFieldMarca" disable="true" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <TextField fx:id="textFieldCategoria" disable="true" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+            <Button fx:id="buttonPesquisar" contentDisplay="CENTER" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonPesquisar" prefHeight="25.0" prefWidth="110.0" text="Pesquisar Dados" GridPane.columnIndex="2">
+               <GridPane.margin>
+                  <Insets left="100.0" />
+               </GridPane.margin>
+            </Button>
+         </children>
+      </GridPane>
+      <Group layoutX="383.0" layoutY="443.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="18.0">
+         <children>
+            <Button fx:id="buttonConfirmar" mnemonicParsing="false" onAction="#handleButtonConfirmar" text="Confirmar" />
+            <Button fx:id="buttonCancelar" layoutX="75.0" mnemonicParsing="false" onAction="#handleButtonCancelar" prefHeight="25.0" prefWidth="69.0" text="Cancelar" />
+         </children>
+      </Group>
+   </children>
+</AnchorPane>
